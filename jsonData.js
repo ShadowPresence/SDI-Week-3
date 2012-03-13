@@ -8,7 +8,8 @@ var ddata = {
 		{
 			"kind": "Red",
 			"hitPoints": 2000,
-			"attack": 325
+			"attackMin": 125,
+			"attackMax": 325
 		},
 		{
 			"kind": "Blue",
@@ -54,6 +55,23 @@ var wdata = {
 			"name": "Dumbledore",
 			"hitPoints": 800,
 			"attack": 100
+		}
+	]
+};
+
+var mdata = {
+	"dmessage": [
+		{
+			"dmid": 0,
+			"message": "The " + 'variable for dragon name' + " strikes but was unable to make contact!"
+		},
+		{
+			"dmid": 1,
+			"message": "The " + 'variable for dragon name' + " strikes and makes contact!"
+		},
+		{
+			"dmid": 2,
+			"message": "The " + 'variable for dragon name' + " lands a devastating blow!"
 		}
 	]
 };

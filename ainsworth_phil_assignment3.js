@@ -8,9 +8,7 @@ var merlinWin = [],
 	morganaWin = [],
 	gandalfWin = [],
 	dumbledoreWin = [];
-var selectedWizard,
-	selectedDragon,
-	win,
+var win,
 	dragAmount,
 	wizAmount;
 	
@@ -40,7 +38,7 @@ var autoDefeat = function (wiz, drag) {
 
 // -- Function 2 Number, BATTLE --
 var battle = function(wiz, drag) {
-	var strike = drag
+	var strike = drag;
 	logIt("Dragon hit points: " + strike);
 	logIt("Your attack ability is rated at: " + wiz);
 	while (wiz < strike) { 
@@ -114,20 +112,21 @@ var wins = function (array) {
 var numberOfBattles = prompt("How many battles would you like to fight today?");
 
 // -- Start calling functions
-var sessions = sessionLength(numberOfBattles);
-logIt(" -- The battles have completed! -- ");
-logIt("HERE ARE THE STATS:");
-var dragAmount = stats(dragons, dragonhp);
-var wizAmount = stats(wizards, wizardap);
-
-logIt("The last battle was fought by " + wizAmount[selectedWizard] + " who defeated the " + dragAmount[selectedDragon] + " dragon.");
-
-logIt("Merlin won: " + merlinWin.length);
-logIt("Morgana won: " + morganaWin.length);
-logIt("Gandalf won: " + gandalfWin.length);
-logIt("Dumbledore won: " + dumbledoreWin.length);
-
-logIt("You played " + sessions + " sessions");
+if (!numberOfBattles) {
+		logIt("You chose to cancel.");
+	} else {
+		var sessions = sessionLength(numberOfBattles);
+		logIt(" -- The battles have completed! -- ");
+		logIt("HERE ARE THE STATS:");
+		var dragAmount = stats(dragons, dragonhp);
+		var wizAmount = stats(wizards, wizardap);
+		logIt("The last battle was fought by " + wizAmount[selectedWizard] + " who defeated the " + dragAmount[selectedDragon] + " dragon.");
+		logIt("Merlin won: " + merlinWin.length);
+		logIt("Morgana won: " + morganaWin.length);
+		logIt("Gandalf won: " + gandalfWin.length);
+		logIt("Dumbledore won: " + dumbledoreWin.length);
+		logIt("You played " + sessions + " sessions");
+};
 
 
 
