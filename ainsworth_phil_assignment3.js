@@ -10,7 +10,9 @@ var merlinWin = [],
 	dumbledoreWin = [];
 var win,
 	dragAmount,
-	wizAmount;
+	wizAmount,
+	wizard,
+	dragon;
 	
 // -- Functions --
 // -- Procedure 1, LOGIT --
@@ -27,12 +29,12 @@ var logIt = function (input) {
 // -- Function 1 Boolean, AUTO DEFEAT --
 var autoDefeat = function (wiz, drag) {
 	if (wiz >= drag) {
-		logIt(fuse("You are far superior than the puny ", dragons[selectedDragon], " dragon!"));
+		logIt(fuse("You are far superior than the puny ", dragon.kind, " dragon!"));
 		logIt("It lays slain after a single fatal blow!");
 		win = 1;
 		return true;
 	} else {
-		logIt(wizards[selectedWizard] + ", prepare to battle the " + dragons[selectedDragon] + " dragon!");
+		logIt(wizard.name + ", prepare to battle the " + dragon.kind + " dragon!");
 		return false;
 	};
 	
@@ -74,26 +76,26 @@ var fuse = function (a, b, c) {
 	return a + b + c;
 };
 
-// -- Extra Function, SESSIONS --
-/* var sessionLength = function (loops) {
-	for (i=0; i < loops; i++) {
-		// -- More user input variables
-		// -- old method -- selectedWizard = wizards.indexOf(prompt ("Please select a wizard for battle #" + (i+1) + ": " + wizards.join(", ")));
-		// -- old method -- selectedDragon = dragons.indexOf(prompt("Please select a dragon to fight: " + dragons.join(", ")));
-		seletedWizard = wData.wizards[randomizer(0, 3)].name;
-		selectedDragon = dData.dragons[randomizer(0, 4)].kind;
-		var defeated = autoDefeat(wizardap[selectedWizard], dragonhp[selectedDragon]);
-		if (defeated) {
-			logIt(fuse("Congratulation! You defeated the ", dragons[selectedDragon], " dragon!"));	
-		} else {
-		battle(wizardap[selectedWizard], dragonhp[selectedDragon]);
-		};
-		wins(wizards[selectedWizard]);
+// -- Function 5, ALTERCATION --
+var altercation = function () {
+	wizard = currentWizard();
+	var defeated = autoDefeat(wizard.attack, dragon.life);
+	if (defeated) {
+		logIt(fuse("Congratulation! You defeated the ", dragon.kind, " dragon!"));	
+	} else {
+	battle(wizard.attack, dragon.life);
 	};
-	return i;
-}; */
+	wins(wizard.name);
+};
 
-// -- Function 6 Nested IF statements, Randomizer
+var quest = function (loops) {
+	var i = 0
+	while (i < loops) {
+		
+	};
+};
+
+// -- Function 6 Nested IF statements, RANDOMIZER
 var randomizer = function (min, max) {
 	var rand = Math.floor(Math.random() * max);
 	if (rand < min) {
@@ -119,50 +121,59 @@ var wins = function (array) {
 	} else return;
 };
 
+// -- Function 7 json Object, FIND DRAGON
+var findDragon = function () {
+	var selectedDragon = randomizer(0, dData.dragons.length);
+	var kind = dData.dragons[selectedDragon].kind;
+	var life = dData.dragons[selectedDragon].hitPoints;
+	var dmin = dData.dragons[selectedDragon].attackMin;
+	var dmax = dData.dragons[selectedDragon].attackMax;
+	var dattack = randomizer(dmin, dmax);
+	return {
+		"life": life,
+		"kind": kind,
+		"attack": dattack
+	};
+};
 
+// -- Function 8 json Object, CURRENT WIZARD
+var currentWizard = function () {
+	var selectedWizard = randomizer(0, wData.wizards.length);
+	var name = wData.wizards[selectedWizard].name;
+	var life = wData.wizards[selectedWizard].hitPoints;
+	var wmin = wData.wizards[selectedWizard].attackMin;
+	var wmax = wData.wizards[selectedWizard].attackMax;
+	var wattack = randomizer(wmin, wmax);
+	return {
+		"life": life,
+		"name": name,
+		"attack": wattack
+	};
+};
 
 // -- Start of script --
+logIt("A party of 4 Wizards has been brought to Dragonia to rid the land of the 5 dragons that currently terrorize the village.");
+// var begin = prompt("Are you ready to start the quest?");
+// if (begin) {
+	logIt("They have traveled into the woods to find the first dragon...");
+	var dragon = findDragon();  // -- select a dragon
+	logIt("The wizards have found a " + dragon.kind + " dragon!");
+	// var q = quest(dData.dragons.length);
+	var f = altercation();  // -- fight the selected dragon
 
-
-	
 // -- User input variables
-//alert("A party of 4 Wizards has been brought to Dragonia to rid the land of the 5 dragons that currently terrorize the village.");
-//alert("They have traveled into the woods to find the first dragon.");
-// var numberOfBattles = prompt("How many battles would you like to fight today?");
 
-//			var seletedWizard = wData.wizards[randomizer(0, 3)].name;
 
-		var x = function () {
-			var selectedDragon = randomizer(0, 5);
-			var life = dData.dragons[selectedDragon].hitPoints;
-			var kind = dData.dragons[selectedDragon].kind;
-			var dmin = dData.dragons[selectedDragon].attackMin;
-			var dmax = dData.dragons[selectedDragon].attackMax;
-			var attack = randomizer(dmin, dmax);
-			// dData.dragons[selectedDragon].ranAttack;
-			// var add = function (y) { attack.push(y) };
-			// var z = randomizer(dmin, dmax);
-			// add(z);
-			return {
-				"life": life,
-				"kind": kind,
-				"dmin": dmin,
-				"dmax": dmax,
-				"attack": attack
-			};
-		};
-		
-		var dragon = x();
 		logIt(dragon.kind);
 		logIt(dragon.life);
-		logIt(dragon.dmin);
-		logIt(dragon.dmax);
 		logIt(dragon.attack);
-		//logIt(wData.wizards[randomizer(0, dData.dragons.length)].name);
-		//logIt(dData.dragons[randomizer(0, wData.wizards.length)].kind);
-		//logIt(dData.dragons[0].ranAttack);
+		
+		
 
-		// randomizer(attackMin, attackMax)
+logIt("END OF SCRIPT");
+// };
+// -- End of Script --
+
 
 /*		var sessions = sessionLength();
 		logIt(" -- The battles have completed! -- ");
@@ -178,7 +189,11 @@ var wins = function (array) {
 		
 */
 
-
+		// -- More user input variables
+		// -- old method -- selectedWizard = wizards.indexOf(prompt ("Please select a wizard for battle #" + (i+1) + ": " + wizards.join(", ")));
+		// -- old method -- selectedDragon = dragons.indexOf(prompt("Please select a dragon to fight: " + dragons.join(", ")));
+		// seletedWizard = wData.wizards[randomizer(0, 3)].name;
+		// selectedDragon = dData.dragons[randomizer(0, 4)].kind;
 
 // -- Start calling functions
 /* if (!numberOfBattles) {
@@ -188,3 +203,10 @@ var wins = function (array) {
 }; */
 
 
+// var numberOfBattles = prompt("How many battles would you like to fight today?");
+
+//			var seletedWizard = wData.wizards[randomizer(0, 3)].name;
+
+
+		
+		
