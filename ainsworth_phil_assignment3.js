@@ -89,6 +89,19 @@ var sessionLength = function (loops) {
 	return i;
 };
 
+// -- Function 6 Nested IF statements, Randomizer
+var randomizer = function (min, max) {
+	var rand = Math.floor(Math.random() * max);
+	if (rand < min) {
+		var x = rand += min;
+			if (x > max) {
+				var dif = x - max;
+				rand = x - dif;
+			};
+	};
+	return rand;
+};
+
 // -- Extra Procedure, WINS --
 var wins = function (array) {
 	if (array==="Merlin") {
@@ -131,4 +144,6 @@ if (!numberOfBattles) {
 
 
 
+var rng = newNum(125, 325);
 
+console.log(rng);
