@@ -15,7 +15,9 @@ var win,
 // -- Functions --
 // -- Procedure 1, LOGIT --
 var logIt = function (input) {
-	if (!input) {
+	if (input >= 0) {
+		console.log(input);
+	} else if (!input) {
 		console.log("We have nothing to log.");
 	} else {
 		console.log(input);
@@ -73,11 +75,13 @@ var fuse = function (a, b, c) {
 };
 
 // -- Extra Function, SESSIONS --
-var sessionLength = function (loops) {
+/* var sessionLength = function (loops) {
 	for (i=0; i < loops; i++) {
 		// -- More user input variables
-		selectedWizard = wizards.indexOf(prompt ("Please select a wizard for battle #" + (i+1) + ": " + wizards.join(", ")));
-		selectedDragon = dragons.indexOf(prompt("Please select a dragon to fight: " + dragons.join(", ")));
+		// -- old method -- selectedWizard = wizards.indexOf(prompt ("Please select a wizard for battle #" + (i+1) + ": " + wizards.join(", ")));
+		// -- old method -- selectedDragon = dragons.indexOf(prompt("Please select a dragon to fight: " + dragons.join(", ")));
+		seletedWizard = wData.wizards[randomizer(0, 3)].name;
+		selectedDragon = dData.dragons[randomizer(0, 4)].kind;
 		var defeated = autoDefeat(wizardap[selectedWizard], dragonhp[selectedDragon]);
 		if (defeated) {
 			logIt(fuse("Congratulation! You defeated the ", dragons[selectedDragon], " dragon!"));	
@@ -87,7 +91,7 @@ var sessionLength = function (loops) {
 		wins(wizards[selectedWizard]);
 	};
 	return i;
-};
+}; */
 
 // -- Function 6 Nested IF statements, Randomizer
 var randomizer = function (min, max) {
@@ -122,13 +126,45 @@ var wins = function (array) {
 
 	
 // -- User input variables
-var numberOfBattles = prompt("How many battles would you like to fight today?");
+//alert("A party of 4 Wizards has been brought to Dragonia to rid the land of the 5 dragons that currently terrorize the village.");
+//alert("They have traveled into the woods to find the first dragon.");
+// var numberOfBattles = prompt("How many battles would you like to fight today?");
 
-// -- Start calling functions
-if (!numberOfBattles) {
-		logIt("You chose to cancel.");
-	} else {
-		var sessions = sessionLength(numberOfBattles);
+//			var seletedWizard = wData.wizards[randomizer(0, 3)].name;
+
+		var x = function () {
+			var selectedDragon = randomizer(0, 5);
+			var life = dData.dragons[selectedDragon].hitPoints;
+			var kind = dData.dragons[selectedDragon].kind;
+			var dmin = dData.dragons[selectedDragon].attackMin;
+			var dmax = dData.dragons[selectedDragon].attackMax;
+			var attack = randomizer(dmin, dmax);
+			// dData.dragons[selectedDragon].ranAttack;
+			// var add = function (y) { attack.push(y) };
+			// var z = randomizer(dmin, dmax);
+			// add(z);
+			return {
+				"life": life,
+				"kind": kind,
+				"dmin": dmin,
+				"dmax": dmax,
+				"attack": attack
+			};
+		};
+		
+		var dragon = x();
+		logIt(dragon.kind);
+		logIt(dragon.life);
+		logIt(dragon.dmin);
+		logIt(dragon.dmax);
+		logIt(dragon.attack);
+		//logIt(wData.wizards[randomizer(0, dData.dragons.length)].name);
+		//logIt(dData.dragons[randomizer(0, wData.wizards.length)].kind);
+		//logIt(dData.dragons[0].ranAttack);
+
+		// randomizer(attackMin, attackMax)
+
+/*		var sessions = sessionLength();
 		logIt(" -- The battles have completed! -- ");
 		logIt("HERE ARE THE STATS:");
 		var dragAmount = stats(dragons, dragonhp);
@@ -139,11 +175,16 @@ if (!numberOfBattles) {
 		logIt("Gandalf won: " + gandalfWin.length);
 		logIt("Dumbledore won: " + dumbledoreWin.length);
 		logIt("You played " + sessions + " sessions");
-};
+		
+*/
 
 
 
+// -- Start calling functions
+/* if (!numberOfBattles) {
+		logIt("You chose to cancel.");
+	} else {
 
-var rng = newNum(125, 325);
+}; */
 
-console.log(rng);
+

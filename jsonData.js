@@ -3,58 +3,75 @@
 // Created: 3/12/12 21:37
 // Description: Wizards & Dragons
 
-var ddata = {
+var dData = {
 	"dragons": [
 		{
 			"kind": "Red",
 			"hitPoints": 2000,
 			"attackMin": 125,
-			"attackMax": 325
+			"attackMax": 325,
+			"ranAttack": []
 		},
 		{
 			"kind": "Blue",
 			"hitPoints": 1000,
-			"attack": 250
+			"attackMin": 150,
+			"attackMax": 250,
+			"ranAttack": []
 		},
 		{
 			"kind": "Green",
 			"hitPoints": 500,
-			"attack": 150
+			"attackMin": 50,
+			"attackMax": 150,
+			"ranAttack": []
 		},
 		{
 			"kind": "RazorBack",
 			"hitPoints": 250,
-			"attack": 200
+			"attackMin": 200,
+			"attackMax": 200,
+			"ranAttack": []
 		},
 		{
 			"kind": "Gorgonthaller",
 			"hitPoints": 125,
-			"attack": 100
+			"attackMin": 0,
+			"attackMax": 100,
+			"ranAttack": []
 		}
 	]
 };
 
-var wdata = {
+var wData = {
 	"wizards": [
 		{
 			"name": "Merlin",
 			"hitPoints": 1500,
-			"attack": 500
+			"attackMin": 350,
+			"attackMax": 500,
+			"ranAttack": []
 		},
 		{
 			"name": "Morgana",
 			"hitPoints": 1000,
-			"attack": 400
+			"attackMin": 100,
+			"attackMax": 400,
+			"ranAttack": []
 		},
 		{
 			"name": "Gandalf",
 			"hitPoints": 1200,
-			"attack": 200
+			"attackMin": 200,
+			"attackMax": 200,
+			"ranAttack": []
 		},
 		{
 			"name": "Dumbledore",
 			"hitPoints": 800,
-			"attack": 100
+			"attackMin": 0,
+			"attackMax": 100,
+			"ranAttack": []
 		}
 	]
 };
