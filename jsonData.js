@@ -3,6 +3,21 @@
 // Created: 3/12/12 21:37
 // Description: Wizards & Dragons
 
+// -- Variable Farm --
+var merlinWin = [],
+	morganaWin = [],
+	gandalfWin = [],
+	dumbledoreWin = [],
+	dragonia = [];
+var win,
+	dragAmount,
+	wizAmount,
+	wizard,
+	dragon,
+	selectedDragon,
+	selectedWizard;
+	
+	
 var dData = {
 	"dragons": [
 		{
@@ -76,19 +91,11 @@ var wData = {
 	]
 };
 
-var mdata = {
-	"dmessage": [
-		{
-			"dmid": 0,
-			"message": "The " + 'variable for dragon name' + " strikes but was unable to make contact!"
-		},
-		{
-			"dmid": 1,
-			"message": "The " + 'variable for dragon name' + " strikes and makes contact!"
-		},
-		{
-			"dmid": 2,
-			"message": "The " + 'variable for dragon name' + " lands a devastating blow!"
-		}
-	]
+var mData = {
+	"dMessage": [ 	{ hub: function () { return "The " + dragon.kind + " dragon strikes but was unable to make contact!"; } },
+					{ hub: function () { return "The " + dragon.kind + " dragon strikes and makes contact!"; } },
+					{ hub: function () { return "The " + dragon.kind + " dragon lands a devastating blow!"; } }],
+	"wMessage": [	{ hub: function () { return wizard.name + " lashes out but misses!"; } },
+					{ hub: function () { return wizard.name + " strikes and makes contact!"; } },
+					{ hub: function () { return wizard.name + " lands a devastating blow!"; } }]
 };

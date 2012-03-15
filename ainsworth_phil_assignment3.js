@@ -2,20 +2,6 @@
 // Author: Phil Ainsworth
 // Created: 3/12/12 21:37
 // Description: Wizards & Dragons
-
-// -- Variable Farm --
-var merlinWin = [],
-	morganaWin = [],
-	gandalfWin = [],
-	dumbledoreWin = [],
-	dragonia = [];
-var win,
-	dragAmount,
-	wizAmount,
-	wizard,
-	dragon,
-	selectedDragon,
-	selectedWizard;
 	
 // -- Functions --
 // -- Procedure 1, LOGIT --
@@ -62,16 +48,26 @@ var battle = function(drag) {
 	logIt("Dragon hit points: " + life);
 	while (life > 0) { 
 		var wiz = randomizer(wizard.wmin, wizard.wmax);
-		logIt(wizard.name + " strikes with a blow of " + wiz);
+		if (wiz === 0) {
+			var M = 0;
+		} else if ( wiz === wizard.wmax) {
+			var M = 2;
+		} else {
+			var M = 1;
+		};
+		var talkSmack = mData.wMessage[M].hub;
+		logIt(talkSmack());
 		life -= wiz;
 		if (life > 0) {
 			logIt("You hit the dragon! It's hit points have been reduced to " + life);
 		} else {
-			logIt("You have slayed the " + dragon.kind + "dragon!");
+			logIt("You have slayed the " + dragon.kind + " dragon!");
 		};
 	};
 	return 1;
-}
+};
+
+
 
 // -- Function 3 Array, STATS --
 var stats = function (char) {
@@ -99,6 +95,10 @@ var fuse = function (a, b, c) {
 // -- Function 5, ALTERCATION --
 var altercation = function () {
 	wizard = currentWizard();
+	while ((wizard.wmax * 10) <= dragon.life) {
+		logIt(wizard.name + ", you are not strong enough, please step aside and let another wizard fight.");
+		wizard = currentWizard();
+	};
 	var defeated = autoDefeat(wizard.wmin, dragon.life);
 	if (defeated) {
 		logIt(fuse("Congratulation! You defeated the ", dragon.kind, " dragon!"));	
@@ -169,11 +169,10 @@ var remove = function (darray) {
 
 // -- Function 11 Start of Quest, QUEST --
 var quest = function () {
-	var i = 0
-	while (i < dragonia.length) {
+	while (0 < dragonia.length) {
 		dragon = findDragon();  // -- select a dragon
 		if (dragonia.length===1) {
-			logIt("The wizards have found the elusive " + dragon.kind + " dragon!");
+			logIt("The wizards have found the elusive " + dragon.kind + " beast!");
 		} else {
 			logIt("The wizards have found a " + dragon.kind + " dragon!");
 		};
@@ -195,8 +194,6 @@ var getNames = function (arg) {
 	};
 };
 
-
-
 // -- Start of script --
 logIt("A party of 4 Wizards has been brought to Dragonia to rid the land of the 5 dragons that currently terrorize the village.");
 var begin = prompt("Are you ready to start the quest?");
@@ -206,7 +203,7 @@ if (begin) {
 	getNames(wData.wizards);
 	logIt(names.join(", ") + " & " + wData.wizards[wData.wizards.length-1].name + " have traveled into the woods to find the first dragon...");
 	quest();
-	logIt(" -- The battles have completed! -- ");
+	logIt(" -- Dragonia has been cleared off all it's dragons. It will now be known as Boresville! -- ");
 	logIt("HERE ARE THE STATS:");
 	dragAmount = stats(dData.dragons);
 	wizAmount = stats(wData.wizards);
@@ -214,7 +211,6 @@ if (begin) {
 	logIt("Morgana won: " + morganaWin.length);
 	logIt("Gandalf won: " + gandalfWin.length);
 	logIt("Dumbledore won: " + dumbledoreWin.length);
-	logIt("END OF SCRIPT");
 } else {
 	logIt("You chose to cancel.");
 };
