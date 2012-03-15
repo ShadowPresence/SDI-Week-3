@@ -14,7 +14,7 @@ var win,
 	wizAmount,
 	wizard,
 	dragon,
-	//selectedDragon = 0,
+	selectedDragon,
 	selectedWizard;
 	
 // -- Functions --
@@ -27,6 +27,19 @@ var logIt = function (input) {
 	} else {
 		console.log(input);
 	};
+};
+
+// -- Procedure 2, WINS --
+var wins = function (array) {
+	if (array==="Merlin") {
+		merlinWin.push(win);
+	} else if (array==="Morgana") {
+		morganaWin.push(win);
+	} else if (array==="Gandalf") {
+		gandalfWin.push(win);
+	} else if (array==="Dumbledore") {
+		dumbledoreWin.push(win);
+	} else return;
 };
 
 // -- Function 1 Boolean, AUTO DEFEAT --
@@ -47,14 +60,16 @@ var autoDefeat = function (wiz, drag) {
 var battle = function(drag) {
 	var life = drag;
 	logIt("Dragon hit points: " + life);
-	// logIt("Your attack ability is rated at: " + wiz);
 	while (life > 0) { 
 		var wiz = randomizer(wizard.wmin, wizard.wmax);
 		logIt(wizard.name + " strikes with a blow of " + wiz);
 		life -= wiz;
-		logIt("You hit the dragon! It's hit points have been reduced to " + life);
+		if (life > 0) {
+			logIt("You hit the dragon! It's hit points have been reduced to " + life);
+		} else {
+			logIt("You have slayed the " + dragon.kind + "dragon!");
+		};
 	};
-	logIt("Consider the dragon slain!")
 	return 1;
 }
 
@@ -88,24 +103,14 @@ var altercation = function () {
 	if (defeated) {
 		logIt(fuse("Congratulation! You defeated the ", dragon.kind, " dragon!"));	
 	} else {
-	battle(dragon.life);
+		battle(dragon.life);
 	};
 	remove(dragonia);  // -- remove slain dragon from list
-	wins(wizard.name);
+	wins(wizard.name);	// -- add a win for the wizard
 	return
 };
 
-// -- Function 11 Start of Quest, QUEST
-var quest = function () {
-	var i = 0
-	while (i < dragonia.length) {
-		dragon = findDragon();  // -- select a dragon
-		logIt("The wizards have found a " + dragon.kind + " dragon!");
-		altercation();  // -- fight the selected dragon
-	};
-};
-
-// -- Function 6 Nested IF statements, RANDOMIZER
+// -- Function 6 Nested IF statements, RANDOMIZER --
 var randomizer = function (min, max) {
 	var rand = Math.floor(Math.random() * max);
 	if (rand < min) {
@@ -118,20 +123,7 @@ var randomizer = function (min, max) {
 	return rand;
 };
 
-// -- Extra Procedure, WINS --
-var wins = function (array) {
-	if (array==="Merlin") {
-		merlinWin.push(win);
-	} else if (array==="Morgana") {
-		morganaWin.push(win);
-	} else if (array==="Gandalf") {
-		gandalfWin.push(win);
-	} else if (array==="Dumbledore") {
-		dumbledoreWin.push(win);
-	} else return;
-};
-
-// -- Function 7 json Object, FIND DRAGON
+// -- Function 7 json Object, FIND DRAGON --
 var findDragon = function () {
 	for (selectedDragon=0; selectedDragon < dragonia.length; selectedDragon++) {
 		var kind = dData.dragons[selectedDragon].kind;
@@ -147,7 +139,7 @@ var findDragon = function () {
 	};
 };
 
-// -- Function 8 json Object, CURRENT WIZARD
+// -- Function 8 json Object, CURRENT WIZARD --
 var currentWizard = function () {
 	selectedWizard = randomizer(0, wData.wizards.length);
 	var name = wData.wizards[selectedWizard].name;
@@ -162,7 +154,7 @@ var currentWizard = function () {
 	};
 };
 
-// -- Function 9 Construct editable array, CREATE ARRAY
+// -- Function 9 Construct editable array, CREATE ARRAY --
 var construct = function () {
 	for (d=0; d < dData.dragons.length; d++) {
 		var dkind = dData.dragons[d].kind
@@ -170,9 +162,37 @@ var construct = function () {
 	};
 };
 
-// -- Function 10 Remove defeated dragons, REMOVE DEFEATED
+// -- Function 10 Remove defeated dragons, REMOVE DEFEATED --
 var remove = function (darray) {
 	darray.pop();
+};
+
+// -- Function 11 Start of Quest, QUEST --
+var quest = function () {
+	var i = 0
+	while (i < dragonia.length) {
+		dragon = findDragon();  // -- select a dragon
+		if (dragonia.length===1) {
+			logIt("The wizards have found the elusive " + dragon.kind + " dragon!");
+		} else {
+			logIt("The wizards have found a " + dragon.kind + " dragon!");
+		};
+		altercation();  // -- fight the selected dragon
+		if (dragonia.length===1) {
+			logIt("The wizards continue deeper into the forest searching for the fabled Red Dragon!");
+		} else if (dragonia.length===0) {
+			logIt("The wizards have slayed all the dragons!!");
+		} else {
+			logIt("The wizards continue deeper into the forest searching for more of the evil beasts!");
+		};
+	};
+};
+
+// -- Function 12 Get names, GET NAMES --
+var getNames = function (arg) {
+	for (i=0; i < arg.length-1;i++) {
+		names.push(arg[i].name);
+	};
 };
 
 
@@ -182,53 +202,21 @@ logIt("A party of 4 Wizards has been brought to Dragonia to rid the land of the 
 var begin = prompt("Are you ready to start the quest?");
 if (begin) {
 	construct();
-	logIt("They have traveled into the woods to find the first dragon...");
+	var names = [];
+	getNames(wData.wizards);
+	logIt(names.join(", ") + " & " + wData.wizards[wData.wizards.length-1].name + " have traveled into the woods to find the first dragon...");
 	quest();
-	//
-
-// -- User input variables
-
-		logIt(" -- The battles have completed! -- ");
-		logIt("HERE ARE THE STATS:");
-		dragAmount = stats(dData.dragons);
-		wizAmount = stats(wData.wizards);
-		logIt("Merlin won: " + merlinWin.length);
-		logIt("Morgana won: " + morganaWin.length);
-		logIt("Gandalf won: " + gandalfWin.length);
-		logIt("Dumbledore won: " + dumbledoreWin.length);		
-		
-
-logIt("END OF SCRIPT");
+	logIt(" -- The battles have completed! -- ");
+	logIt("HERE ARE THE STATS:");
+	dragAmount = stats(dData.dragons);
+	wizAmount = stats(wData.wizards);
+	logIt("Merlin won: " + merlinWin.length);
+	logIt("Morgana won: " + morganaWin.length);
+	logIt("Gandalf won: " + gandalfWin.length);
+	logIt("Dumbledore won: " + dumbledoreWin.length);
+	logIt("END OF SCRIPT");
+} else {
+	logIt("You chose to cancel.");
 };
+	
 // -- End of Script --
-
-
-/*		var sessions = sessionLength();
-
-		logIt("The last battle was fought by " + wizAmount[selectedWizard] + " who defeated the " + dragAmount[selectedDragon] + " dragon.");
-
-		logIt("You played " + sessions + " sessions");
-		
-*/
-
-		// -- More user input variables
-		// -- old method -- selectedWizard = wizards.indexOf(prompt ("Please select a wizard for battle #" + (i+1) + ": " + wizards.join(", ")));
-		// -- old method -- selectedDragon = dragons.indexOf(prompt("Please select a dragon to fight: " + dragons.join(", ")));
-		// seletedWizard = wData.wizards[randomizer(0, 3)].name;
-		// selectedDragon = dData.dragons[randomizer(0, 4)].kind;
-
-// -- Start calling functions
-/* if (!numberOfBattles) {
-		logIt("You chose to cancel.");
-	} else {
-
-}; */
-
-
-// var numberOfBattles = prompt("How many battles would you like to fight today?");
-
-//			var seletedWizard = wData.wizards[randomizer(0, 3)].name;
-
-
-		
-		
