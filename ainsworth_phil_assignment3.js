@@ -12,7 +12,9 @@ var win,
 	dragAmount,
 	wizAmount,
 	wizard,
-	dragon;
+	dragon,
+	selectedDragon,
+	selectedWizard;
 	
 // -- Functions --
 // -- Procedure 1, LOGIT --
@@ -29,7 +31,7 @@ var logIt = function (input) {
 // -- Function 1 Boolean, AUTO DEFEAT --
 var autoDefeat = function (wiz, drag) {
 	if (wiz >= drag) {
-		logIt(fuse("You are far superior than the puny ", dragon.kind, " dragon!"));
+		logIt(fuse(wizard.name + ", you are far superior than the puny ", dragon.kind, " dragon!"));
 		logIt("It lays slain after a single fatal blow!");
 		win = 1;
 		return true;
@@ -41,11 +43,13 @@ var autoDefeat = function (wiz, drag) {
 };
 
 // -- Function 2 Number, BATTLE --
-var battle = function(wiz, drag) {
+var battle = function(drag) {
 	var strike = drag;
 	logIt("Dragon hit points: " + strike);
-	logIt("Your attack ability is rated at: " + wiz);
-	while (wiz < strike) { 
+	// logIt("Your attack ability is rated at: " + wiz);
+	while (strike > 0) { 
+		var wiz = randomizer(wizard.wmin, wizard.wmax);
+		logIt(wizard.name + "strikes with a blow of " + wiz);
 		strike -= wiz;
 		logIt("You hit the dragon! It's hit points have been reduced to " + strike);
 	};
@@ -54,16 +58,16 @@ var battle = function(wiz, drag) {
 }
 
 // -- Function 3 Array, STATS --
-var stats = function (char, power) {
-	if (char===dragons) {
+var stats = function (char) {
+	if (char===dData.dragons) {
 		logIt("Dragons:");
-		for (i=0; i<char.length;i++) {
-			logIt("The " + char[i] + " Dragon has " + power[i] + " hit points"); 
+		for (i=0; i < char.length;i++) {
+			logIt("The " + char[i].kind + " Dragon has " + char[i].hitPoints + " hit points"); 
 		};
-	} else if (char===wizards) {
+	} else if (char===wData.wizards) {
 		logIt("Wizards:");
-		for (i=0; i<char.length;i++) {
-			logIt("The Wizard " + char[i] + " has " + power[i] + " attack points"); 
+		for (i=0; i < char.length;i++) {
+			logIt("The Wizard " + char[i].name + " has " + char[i].attackMax + " attack points"); 
 		};
 	} else {
 		logIt("Why is this getting chosen?");
@@ -79,12 +83,13 @@ var fuse = function (a, b, c) {
 // -- Function 5, ALTERCATION --
 var altercation = function () {
 	wizard = currentWizard();
-	var defeated = autoDefeat(wizard.attack, dragon.life);
+	var defeated = autoDefeat(wizard.wmin, dragon.life);
 	if (defeated) {
 		logIt(fuse("Congratulation! You defeated the ", dragon.kind, " dragon!"));	
 	} else {
-	battle(wizard.attack, dragon.life);
+	battle(dragon.life);
 	};
+	remove(dData.dragons[selectedDragon]);  // -- remove slain dragon from list
 	wins(wizard.name);
 };
 
@@ -123,7 +128,7 @@ var wins = function (array) {
 
 // -- Function 7 json Object, FIND DRAGON
 var findDragon = function () {
-	var selectedDragon = randomizer(0, dData.dragons.length);
+	selectedDragon = randomizer(0, dData.dragons.length);
 	var kind = dData.dragons[selectedDragon].kind;
 	var life = dData.dragons[selectedDragon].hitPoints;
 	var dmin = dData.dragons[selectedDragon].attackMin;
@@ -138,18 +143,20 @@ var findDragon = function () {
 
 // -- Function 8 json Object, CURRENT WIZARD
 var currentWizard = function () {
-	var selectedWizard = randomizer(0, wData.wizards.length);
+	selectedWizard = randomizer(0, wData.wizards.length);
 	var name = wData.wizards[selectedWizard].name;
 	var life = wData.wizards[selectedWizard].hitPoints;
 	var wmin = wData.wizards[selectedWizard].attackMin;
 	var wmax = wData.wizards[selectedWizard].attackMax;
-	var wattack = randomizer(wmin, wmax);
 	return {
 		"life": life,
 		"name": name,
-		"attack": wattack
+		"wmin": wmin,
+		"wmax": wmax
 	};
 };
+
+// -- Function 9 Remove json data, REMOVE DEFEATED
 
 // -- Start of script --
 logIt("A party of 4 Wizards has been brought to Dragonia to rid the land of the 5 dragons that currently terrorize the village.");
@@ -163,11 +170,14 @@ logIt("A party of 4 Wizards has been brought to Dragonia to rid the land of the 
 
 // -- User input variables
 
-
-		logIt(dragon.kind);
-		logIt(dragon.life);
-		logIt(dragon.attack);
-		
+		logIt(" -- The battles have completed! -- ");
+		logIt("HERE ARE THE STATS:");
+		dragAmount = stats(dData.dragons);
+		wizAmount = stats(wData.wizards);
+		logIt("Merlin won: " + merlinWin.length);
+		logIt("Morgana won: " + morganaWin.length);
+		logIt("Gandalf won: " + gandalfWin.length);
+		logIt("Dumbledore won: " + dumbledoreWin.length);		
 		
 
 logIt("END OF SCRIPT");
@@ -176,15 +186,9 @@ logIt("END OF SCRIPT");
 
 
 /*		var sessions = sessionLength();
-		logIt(" -- The battles have completed! -- ");
-		logIt("HERE ARE THE STATS:");
-		var dragAmount = stats(dragons, dragonhp);
-		var wizAmount = stats(wizards, wizardap);
+
 		logIt("The last battle was fought by " + wizAmount[selectedWizard] + " who defeated the " + dragAmount[selectedDragon] + " dragon.");
-		logIt("Merlin won: " + merlinWin.length);
-		logIt("Morgana won: " + morganaWin.length);
-		logIt("Gandalf won: " + gandalfWin.length);
-		logIt("Dumbledore won: " + dumbledoreWin.length);
+
 		logIt("You played " + sessions + " sessions");
 		
 */
