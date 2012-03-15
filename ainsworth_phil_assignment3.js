@@ -7,13 +7,14 @@
 var merlinWin = [],
 	morganaWin = [],
 	gandalfWin = [],
-	dumbledoreWin = [];
+	dumbledoreWin = [],
+	dragonia = [];
 var win,
 	dragAmount,
 	wizAmount,
 	wizard,
 	dragon,
-	selectedDragon,
+	//selectedDragon = 0,
 	selectedWizard;
 	
 // -- Functions --
@@ -44,14 +45,14 @@ var autoDefeat = function (wiz, drag) {
 
 // -- Function 2 Number, BATTLE --
 var battle = function(drag) {
-	var strike = drag;
-	logIt("Dragon hit points: " + strike);
+	var life = drag;
+	logIt("Dragon hit points: " + life);
 	// logIt("Your attack ability is rated at: " + wiz);
-	while (strike > 0) { 
+	while (life > 0) { 
 		var wiz = randomizer(wizard.wmin, wizard.wmax);
-		logIt(wizard.name + "strikes with a blow of " + wiz);
-		strike -= wiz;
-		logIt("You hit the dragon! It's hit points have been reduced to " + strike);
+		logIt(wizard.name + " strikes with a blow of " + wiz);
+		life -= wiz;
+		logIt("You hit the dragon! It's hit points have been reduced to " + life);
 	};
 	logIt("Consider the dragon slain!")
 	return 1;
@@ -89,14 +90,18 @@ var altercation = function () {
 	} else {
 	battle(dragon.life);
 	};
-	remove(dData.dragons[selectedDragon]);  // -- remove slain dragon from list
+	remove(dragonia);  // -- remove slain dragon from list
 	wins(wizard.name);
+	return
 };
 
-var quest = function (loops) {
+// -- Function 11 Start of Quest, QUEST
+var quest = function () {
 	var i = 0
-	while (i < loops) {
-		
+	while (i < dragonia.length) {
+		dragon = findDragon();  // -- select a dragon
+		logIt("The wizards have found a " + dragon.kind + " dragon!");
+		altercation();  // -- fight the selected dragon
 	};
 };
 
@@ -128,16 +133,17 @@ var wins = function (array) {
 
 // -- Function 7 json Object, FIND DRAGON
 var findDragon = function () {
-	selectedDragon = randomizer(0, dData.dragons.length);
-	var kind = dData.dragons[selectedDragon].kind;
-	var life = dData.dragons[selectedDragon].hitPoints;
-	var dmin = dData.dragons[selectedDragon].attackMin;
-	var dmax = dData.dragons[selectedDragon].attackMax;
-	var dattack = randomizer(dmin, dmax);
+	for (selectedDragon=0; selectedDragon < dragonia.length; selectedDragon++) {
+		var kind = dData.dragons[selectedDragon].kind;
+		var life = dData.dragons[selectedDragon].hitPoints;
+		var dmin = dData.dragons[selectedDragon].attackMin;
+		var dmax = dData.dragons[selectedDragon].attackMax;
+	}
 	return {
 		"life": life,
 		"kind": kind,
-		"attack": dattack
+		"dmin": dmin,
+		"dmax": dmax
 	};
 };
 
@@ -156,17 +162,29 @@ var currentWizard = function () {
 	};
 };
 
-// -- Function 9 Remove json data, REMOVE DEFEATED
+// -- Function 9 Construct editable array, CREATE ARRAY
+var construct = function () {
+	for (d=0; d < dData.dragons.length; d++) {
+		var dkind = dData.dragons[d].kind
+		dragonia.push(dkind);
+	};
+};
+
+// -- Function 10 Remove defeated dragons, REMOVE DEFEATED
+var remove = function (darray) {
+	darray.pop();
+};
+
+
 
 // -- Start of script --
 logIt("A party of 4 Wizards has been brought to Dragonia to rid the land of the 5 dragons that currently terrorize the village.");
-// var begin = prompt("Are you ready to start the quest?");
-// if (begin) {
+var begin = prompt("Are you ready to start the quest?");
+if (begin) {
+	construct();
 	logIt("They have traveled into the woods to find the first dragon...");
-	var dragon = findDragon();  // -- select a dragon
-	logIt("The wizards have found a " + dragon.kind + " dragon!");
-	// var q = quest(dData.dragons.length);
-	var f = altercation();  // -- fight the selected dragon
+	quest();
+	//
 
 // -- User input variables
 
@@ -181,7 +199,7 @@ logIt("A party of 4 Wizards has been brought to Dragonia to rid the land of the 
 		
 
 logIt("END OF SCRIPT");
-// };
+};
 // -- End of Script --
 
 
