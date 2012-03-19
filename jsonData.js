@@ -3,19 +3,6 @@
 // Created: 3/12/12 21:37
 // Description: Wizards & Dragons
 
-// -- Variable Farm --
-var merlinWin = [],
-	morganaWin = [],
-	gandalfWin = [],
-	dumbledoreWin = [],
-	dragonia = [];
-var win,
-	dragAmount,
-	wizAmount,
-	wizard,
-	dragon,
-	selectedDragon,
-	selectedWizard;
 	
 	
 var dData = {
@@ -24,36 +11,31 @@ var dData = {
 			"kind": "Red",
 			"hitPoints": 2000,
 			"attackMin": 125,
-			"attackMax": 325,
-			"ranAttack": []
+			"attackMax": 325
 		},
 		{
 			"kind": "Blue",
 			"hitPoints": 1000,
 			"attackMin": 150,
-			"attackMax": 250,
-			"ranAttack": []
+			"attackMax": 250
 		},
 		{
 			"kind": "Green",
 			"hitPoints": 500,
 			"attackMin": 50,
-			"attackMax": 150,
-			"ranAttack": []
+			"attackMax": 150
 		},
 		{
 			"kind": "RazorBack",
 			"hitPoints": 250,
 			"attackMin": 200,
-			"attackMax": 200,
-			"ranAttack": []
+			"attackMax": 200
 		},
 		{
 			"kind": "Gorgonthaller",
 			"hitPoints": 125,
 			"attackMin": 0,
-			"attackMax": 100,
-			"ranAttack": []
+			"attackMax": 100
 		}
 	]
 };
@@ -65,28 +47,28 @@ var wData = {
 			"hitPoints": 1500,
 			"attackMin": 350,
 			"attackMax": 500,
-			"ranAttack": []
+			"Win": []
 		},
 		{
 			"name": "Morgana",
 			"hitPoints": 1000,
 			"attackMin": 100,
 			"attackMax": 400,
-			"ranAttack": []
+			"Win": []
 		},
 		{
 			"name": "Gandalf",
 			"hitPoints": 1200,
 			"attackMin": 200,
 			"attackMax": 200,
-			"ranAttack": []
+			"Win": []
 		},
 		{
 			"name": "Dumbledore",
 			"hitPoints": 800,
 			"attackMin": 0,
 			"attackMax": 100,
-			"ranAttack": []
+			"Win": []
 		}
 	]
 };
@@ -95,7 +77,7 @@ var mData = {
 	"dMessage": [ 	{ hub: function () { return "The " + dragon.kind + " dragon strikes but was unable to make contact!"; } },
 					{ hub: function () { return "The " + dragon.kind + " dragon strikes and makes contact!"; } },
 					{ hub: function () { return "The " + dragon.kind + " dragon lands a devastating blow!"; } }],
-	"wMessage": [	{ hub: function () { return wizard.name + " lashes out but misses!"; } },
-					{ hub: function () { return wizard.name + " strikes and makes contact!"; } },
-					{ hub: function () { return wizard.name + " lands a devastating blow!"; } }]
+	"wMessage": [	{ hub: function (wiz) { return wizard.name + " lashes out but misses!"; } },
+					{ hub: function (wiz) { return wizard.name + " strikes and makes contact! The " + dragon.kind + " dragon's life has been reduced by " + wiz + " points!"; } },
+					{ hub: function (wiz) { return wizard.name + " lands a devastating blow of " + wiz + " points!"; } }]
 };

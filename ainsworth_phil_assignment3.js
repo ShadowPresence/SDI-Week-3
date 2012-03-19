@@ -2,8 +2,14 @@
 // Author: Phil Ainsworth
 // Created: 3/12/12 21:37
 // Description: Wizards & Dragons
-	
+
+
+// -- Variable Farm --
+var dragonia = [],
+	win;
+
 // -- Functions --
+
 // -- Procedure 1, LOGIT --
 var logIt = function (input) {
 	if (input >= 0) {
@@ -16,16 +22,56 @@ var logIt = function (input) {
 };
 
 // -- Procedure 2, WINS --
-var wins = function (array) {
+var wins = function (array, index) {
 	if (array==="Merlin") {
-		merlinWin.push(win);
+		wData.wizards[index].Win.push(win);
 	} else if (array==="Morgana") {
-		morganaWin.push(win);
+		wData.wizards[index].Win.push(win);
 	} else if (array==="Gandalf") {
-		gandalfWin.push(win);
+		wData.wizards[index].Win.push(win);
 	} else if (array==="Dumbledore") {
-		dumbledoreWin.push(win);
+		wData.wizards[index].Win.push(win);
 	} else return;
+};
+
+// -- Procedure 3 Construct editable array, CREATE ARRAY --
+var construct = function () {
+	for (d=0; d < dData.dragons.length; d++) {
+		var dkind = dData.dragons[d].kind
+		dragonia.push(dkind);
+	};
+};
+
+// -- Procedure 4 Remove defeated dragons, REMOVE DEFEATED --
+var slay = function (darray) {
+	darray.pop();
+};
+
+// -- Procedure 5 Start of Quest, QUEST --
+var quest = function () {
+	while (0 < dragonia.length) {
+		dragon = findDragon();  // -- select a dragon
+		if (dragonia.length===1) {
+			logIt("The wizards have found the elusive " + dragon.kind + " beast!");
+		} else {
+			logIt("The wizards have found a " + dragon.kind + " dragon!");
+		};
+		altercation();  // -- fight the selected dragon
+		if (dragonia.length===1) {
+			logIt("The wizards continue deeper into the forest searching for the fabled Red Dragon!");
+		} else if (dragonia.length===0) {
+			logIt("The wizards have slayed all the dragons!!");
+		} else {
+			logIt("The wizards continue deeper into the forest searching for more of the evil beasts!");
+		};
+	};
+};
+
+// -- Procedure 6 Get names, GET NAMES --
+var getNames = function (arg) {
+	for (i=0; i < arg.length-1;i++) {
+		names.push(arg[i].name);
+	};
 };
 
 // -- Function 1 Boolean, AUTO DEFEAT --
@@ -36,7 +82,7 @@ var autoDefeat = function (wiz, drag) {
 		win = 1;
 		return true;
 	} else {
-		logIt(wizard.name + ", prepare to battle the " + dragon.kind + " dragon!");
+		logIt(wizard.name + ", steps up to battle the " + dragon.kind + " dragon!");
 		return false;
 	};
 	
@@ -56,18 +102,16 @@ var battle = function(drag) {
 			var M = 1;
 		};
 		var talkSmack = mData.wMessage[M].hub;
-		logIt(talkSmack());
+		logIt(talkSmack(wiz));
 		life -= wiz;
 		if (life > 0) {
-			logIt("You hit the dragon! It's hit points have been reduced to " + life);
+			logIt("It's hit points have been reduced to " + life);
 		} else {
 			logIt("You have slayed the " + dragon.kind + " dragon!");
 		};
 	};
 	return 1;
 };
-
-
 
 // -- Function 3 Array, STATS --
 var stats = function (char) {
@@ -79,7 +123,7 @@ var stats = function (char) {
 	} else if (char===wData.wizards) {
 		logIt("Wizards:");
 		for (i=0; i < char.length;i++) {
-			logIt("The Wizard " + char[i].name + " has " + char[i].attackMax + " attack points"); 
+			logIt("The Wizard " + char[i].name + " has " + char[i].attackMin + " - " + char[i].attackMax + " attack points"); 
 		};
 	} else {
 		logIt("Why is this getting chosen?");
@@ -105,8 +149,8 @@ var altercation = function () {
 	} else {
 		battle(dragon.life);
 	};
-	remove(dragonia);  // -- remove slain dragon from list
-	wins(wizard.name);	// -- add a win for the wizard
+	slay(dragonia);  // -- remove slain dragon from list
+	wins(wizard.name, selectedWizard);	// -- add a win for the wizard
 	return
 };
 
@@ -154,48 +198,9 @@ var currentWizard = function () {
 	};
 };
 
-// -- Function 9 Construct editable array, CREATE ARRAY --
-var construct = function () {
-	for (d=0; d < dData.dragons.length; d++) {
-		var dkind = dData.dragons[d].kind
-		dragonia.push(dkind);
-	};
-};
-
-// -- Function 10 Remove defeated dragons, REMOVE DEFEATED --
-var remove = function (darray) {
-	darray.pop();
-};
-
-// -- Function 11 Start of Quest, QUEST --
-var quest = function () {
-	while (0 < dragonia.length) {
-		dragon = findDragon();  // -- select a dragon
-		if (dragonia.length===1) {
-			logIt("The wizards have found the elusive " + dragon.kind + " beast!");
-		} else {
-			logIt("The wizards have found a " + dragon.kind + " dragon!");
-		};
-		altercation();  // -- fight the selected dragon
-		if (dragonia.length===1) {
-			logIt("The wizards continue deeper into the forest searching for the fabled Red Dragon!");
-		} else if (dragonia.length===0) {
-			logIt("The wizards have slayed all the dragons!!");
-		} else {
-			logIt("The wizards continue deeper into the forest searching for more of the evil beasts!");
-		};
-	};
-};
-
-// -- Function 12 Get names, GET NAMES --
-var getNames = function (arg) {
-	for (i=0; i < arg.length-1;i++) {
-		names.push(arg[i].name);
-	};
-};
 
 // -- Start of script --
-logIt("A party of 4 Wizards has been brought to Dragonia to rid the land of the 5 dragons that currently terrorize the village.");
+logIt("A party of 4 Wizards have been brought to Dragonia to rid the land of the 5 dragons that currently terrorize the village.");
 var begin = prompt("Are you ready to start the quest?");
 if (begin) {
 	construct();
@@ -205,12 +210,12 @@ if (begin) {
 	quest();
 	logIt(" -- Dragonia has been cleared off all it's dragons. It will now be known as Boresville! -- ");
 	logIt("HERE ARE THE STATS:");
-	dragAmount = stats(dData.dragons);
-	wizAmount = stats(wData.wizards);
-	logIt("Merlin won: " + merlinWin.length);
-	logIt("Morgana won: " + morganaWin.length);
-	logIt("Gandalf won: " + gandalfWin.length);
-	logIt("Dumbledore won: " + dumbledoreWin.length);
+	stats(dData.dragons);
+	var rarray = stats(wData.wizards);
+	logIt("Merlin won: " + rarray[0].Win.length);
+	logIt("Morgana won: " + rarray[1].Win.length);
+	logIt("Gandalf won: " + rarray[2].Win.length);
+	logIt("Dumbledore won: " + rarray[3].Win.length);
 } else {
 	logIt("You chose to cancel.");
 };
