@@ -72,12 +72,3 @@ var wData = {
 		}
 	]
 };
-
-var mData = {
-	"dMessage": [ 	{ hub: function () { return "The " + dragon.kind + " dragon strikes but was unable to make contact!"; } },
-					{ hub: function () { return "The " + dragon.kind + " dragon strikes and makes contact!"; } },
-					{ hub: function () { return "The " + dragon.kind + " dragon lands a devastating blow!"; } }],
-	"wMessage": [	{ hub: function (wiz) { return wizard.name + " lashes out but misses!"; } },
-					{ hub: function (wiz) { return wizard.name + " strikes and makes contact! The " + dragon.kind + " dragon's life has been reduced by " + wiz + " points!"; } },
-					{ hub: function (wiz) { return wizard.name + " lands a devastating blow of " + wiz + " points!"; } }]
-};
